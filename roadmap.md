@@ -115,12 +115,20 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
   - UI:
     - Add a “Daily Reflection” page with a list of past days.
   - Chat surfacing:
-    - Optionally send a short daily reflection or top resurfaced items as a Telegram message.
+    - Send a short **daily digest** (reflection + topic distribution) as a Telegram message.
+    - Include links or short summaries of top resurfaced items.
 - **WhatsApp Integration (Input + Retrieval)**
   - Add **WhatsApp** as an additional ingestion + retrieval channel using Baileys (or a similar library).
   - Reuse the same intent-handling and semantic retrieval logic:
     - Natural-language messages in WhatsApp should behave like Telegram: save memories and answer queries in simple English.
   - Ensure chat security and access control so only the owner can talk to their second mind.
+
+- **Notification System (Chat-Based)**
+  - Implement a notification pipeline that can:
+    - Send **daily digest** messages (summary of the day’s memories and focus).
+    - Deliver **resurfacing prompts** as proactive chat messages.
+    - Trigger **reminders** based on deadlines detected by the Deadline Detection Agent.
+  - Support Telegram first; extend the same behaviors to WhatsApp once integrated.
 
 ---
 

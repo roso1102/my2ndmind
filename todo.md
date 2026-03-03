@@ -56,6 +56,18 @@ Instead of hard-coded SQL resurfacing, our system should:
 
 This is much smarter than cron-only logic.
 
+### Notifications and Resurfacing Delivery
+
+- Design a **notification strategy** for:
+  - Daily digest (summary of new memories, topics, and tunnels).
+  - Resurfacing prompts (high-score memories pushed proactively).
+  - General nudges or insights from the reflection engine.
+- Implement a notification pipeline that can:
+  - Format resurfaced items and summaries into concise chat messages.
+  - Send them via:
+    - Telegram (MVP).
+    - WhatsApp (once Phase 2 integration is done).
+
 ## Deadline Detection Agent
 
 Instead of you writing regex for dates, our agent/system can:
@@ -75,6 +87,14 @@ Agent:
 - Adds 2-day-before reminder.
 - Adds same-day reminder.
 - Confirms with you.
+
+### Reminder Notifications
+
+- Connect detected deadlines to a **reminder scheduler**.
+- Ensure reminders are delivered as:
+  - Telegram messages in the relevant chat/thread.
+  - WhatsApp messages once Phase 2 integration is ready.
+- Support multiple reminder patterns (e.g., “2 days before”, “same day morning”, “evening check-in”).
 
 ## Product and UX Improvements
 

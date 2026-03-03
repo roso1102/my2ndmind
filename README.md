@@ -172,6 +172,25 @@ This enables meta-cognition.
 
 ---
 
+### 4.6 Notifications and Delivery
+
+MySecondMind is not only pull-based search; it can also **push** information back to you.
+
+Notification channels:
+
+* **Telegram** (primary in early phases).
+* **WhatsApp** (added later).
+
+Types of notifications:
+
+* **Daily digest** — short summary of today’s created memories, topic distribution, and key tunnels or themes.
+* **Resurfacing prompts** — selected high-score memories delivered as contextual recall messages.
+* **Reminders** — deadline-based pings for tasks and time-sensitive memories.
+
+Notifications are delivered as chat messages through your personal bots, so your second mind can proactively talk to you.
+
+---
+
 ## 5. Architecture
 
 ### 5.1 High-Level Architecture
