@@ -69,6 +69,7 @@ Supports:
 * Tasks and deadlines
 * Research notes
 * Ideas
+* Chat messages from Telegram / WhatsApp
 
 The system automatically:
 
@@ -113,6 +114,12 @@ Query processing pipeline:
 Supports natural language recall:
 
 > “That FPGA ASCON medical inference idea.”
+
+In practice, you should be able to ask in simple English, through chat (Telegram/WhatsApp or web), and the system will:
+
+* Infer whether you are trying to **store** a new memory or **retrieve** existing ones.
+* Interpret your intent from natural language.
+* Fetch and present the most relevant memories, not just keyword matches.
 
 ---
 
@@ -170,7 +177,7 @@ This enables meta-cognition.
 ### 5.1 High-Level Architecture
 
 ```
-User Interface (Web / Messaging)
+User Interface (Telegram / WhatsApp / Web dashboard)
             ↓
         FastAPI/Websockets Backend
             ↓
@@ -180,6 +187,12 @@ User Interface (Web / Messaging)
             ↓
         Scheduler (cron)
 ```
+
+Early phases prioritize **chat-based access**:
+
+* **Telegram bot** (created via BotFather) is the primary input and retrieval channel in the MVP.
+* From later phases, **WhatsApp** (via Baileys or similar library) is added as an additional chat channel.
+* Other capture channels (browser extension, email, CLI, etc.) come later as part of multi-channel capture.
 
 ---
 
@@ -206,7 +219,8 @@ User Interface (Web / Messaging)
 
 **Frontend**
 
-* Next.js or  React dashboard
+* Telegram bot (primary early interface for ingestion + retrieval).
+* Next.js or React dashboard (browsing, reflections, analytics).
 
 **Scheduler**
 

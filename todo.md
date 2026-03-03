@@ -25,6 +25,24 @@ Example:
 - If task → call reminder scheduler.
 - If research → generate summary + tags.
 
+## Chat Interfaces (Telegram and WhatsApp)
+
+- **Telegram (MVP, ingestion + retrieval)**
+  - Create a Telegram bot via BotFather and connect it to the backend.
+  - Use Telegram as the **primary channel** for both:
+    - Ingesting memories (notes, links, ideas, tasks) in simple English.
+    - Querying existing memories in simple English (“Ask it about anything and it should understand and fetch what you want”).
+  - Implement intent detection to decide:
+    - When a message should **store** a new memory.
+    - When it should **retrieve** and summarize relevant memories.
+  - Ensure responses are conversational and context-aware inside the chat thread.
+- **WhatsApp (Phase 2, ingestion + retrieval)**
+  - Integrate WhatsApp via Baileys or a similar library.
+  - Mirror the same behaviors as Telegram:
+    - Natural-language ingestion and retrieval.
+    - Shared orchestration + semantic retrieval pipeline.
+  - Handle basic authentication / access control so only the owner can talk to their second mind via WhatsApp.
+
 ## Memory Intelligence Layer
 
 Instead of hard-coded SQL resurfacing, our system should:

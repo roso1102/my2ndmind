@@ -9,27 +9,35 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
 
 ## MVP – Core Personal Memory Engine (Vertical Slice)
 
-**Goal**: A self-hosted system that lets you save memories (text + links), search them semantically, and see a simple daily reflection.
+**Goal**: A self-hosted system that lets you save memories (text + links) and query them in simple English, primarily through a Telegram bot, plus a minimal web view for reflection.
 
 **Scope**
 
-- **Ingestion**
-  - Accept **plain text** and **URLs** via a minimal web UI (React/Next.js) and a simple REST endpoint.
-  - For each item:
+- **Chat-Based Ingestion and Retrieval (Telegram)**
+  - Create a **Telegram bot** via BotFather and connect it to the backend using the Telegram Bot API.
+  - Use Telegram as the **primary input and query channel**:
+    - Free-form English messages for saving notes, links, ideas, and tasks.
+    - Free-form English questions for retrieval (“What was that FPGA ASCON idea?”).
+  - Backend intent handling:
+    - Infer whether a message is **ingestion** (store a new memory) or **retrieval** (query existing memories).
+    - Route ingestion to the memory pipeline; route retrieval to the semantic search pipeline and reply in chat.
+  - For each stored item:
     - Store `raw_content`, `content_type`, `title`, `summary`, `tags` (simple LLM-generated), `created_at`.
 - **Embeddings + Storage**
   - Run a local embedding model (e.g., `bge-small` or `nomic-embed-text`).
   - Store embeddings in **PostgreSQL + pgvector**.
   - Implement a basic `memories` table with the fields from `README.md` that are needed for MVP.
 - **Semantic Retrieval**
-  - Simple search UI: text box → backend → embed query → pgvector similarity search → display top N results (title + summary + link to full content).
+  - Natural-language search via Telegram:
+    - Chat message → backend → embed query → pgvector similarity search → LLM rerank → reply with top N results and short explanations.
+  - Optional minimal web search UI (text box) for debugging and manual exploration.
 - **Basic Daily Reflection (Manual or Cron)**
   - Once per day (or on button click), compute:
     - Count of memories created today.
     - Simple topic breakdown from tags (e.g., top 3 tags + percentages).
   - Render as a small text report on the dashboard.
 - **Infrastructure**
-  - FastAPI backend, React/Next.js frontend.
+  - FastAPI backend, React/Next.js frontend (for dashboard + reflections).
   - Local LLM (Ollama/llm.cpp) used for:
     - Summarization.
     - Tag suggestion.
@@ -73,9 +81,9 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
 
 ---
 
-## Phase 2 – Temporal Intelligence, Resurfacing Engine, and Analytics
+## Phase 2 – Temporal Intelligence, Resurfacing Engine, Analytics, and WhatsApp
 
-**Goal**: Move from static storage to **time-aware cognition** with resurfacing and richer reflections.
+**Goal**: Move from static storage to **time-aware cognition** with resurfacing and richer reflections, and add WhatsApp as a second chat channel.
 
 **Key Themes**
 
@@ -106,6 +114,13 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
       - Short textual reflection (“Trend: Increasing convergence between X and Y” via LLM).
   - UI:
     - Add a “Daily Reflection” page with a list of past days.
+  - Chat surfacing:
+    - Optionally send a short daily reflection or top resurfaced items as a Telegram message.
+- **WhatsApp Integration (Input + Retrieval)**
+  - Add **WhatsApp** as an additional ingestion + retrieval channel using Baileys (or a similar library).
+  - Reuse the same intent-handling and semantic retrieval logic:
+    - Natural-language messages in WhatsApp should behave like Telegram: save memories and answer queries in simple English.
+  - Ensure chat security and access control so only the owner can talk to their second mind.
 
 ---
 
@@ -162,7 +177,7 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
   - Add integrations for:
     - Browser extension or bookmarklet to send current tab as a memory.
     - Email-to-memory address (forward emails to ingest).
-    - Simple CLI or chat-like interface for quick dumps.
+    - Simple CLI or additional chat-like interfaces for quick dumps (beyond the core Telegram + WhatsApp channels).
   - Ensure all channels go through the same orchestration + security + memory pipeline.
 - **Early, Pragmatic Knowledge Graph**
   - Add light entity extraction:
