@@ -67,6 +67,11 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
     - If **task** → call basic reminder/task handler.
     - If **research** → generate richer summary + tags.
   - Extend `content_type` to include: `note`, `link`, `task`, `research`, etc.
+- **Cold Start Strategy**
+  - Design an initial **Day 1 experience** so the system is useful immediately:
+    - Optional import of past Telegram chats (exports), selected notes, or documents.
+    - Lightweight ingestion of recent browser/bookmark history if the user opts in.
+  - Run embeddings over imported content to pre-populate semantic space and seed early tunnels.
 - **Deadline Detection Agent (v1)**
   - Implement a small agent/function that:
     - Extracts dates from text (LLM or rule-based hybrid).
@@ -117,6 +122,8 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
   - Chat surfacing:
     - Send a short **daily digest** (reflection + topic distribution) as a Telegram message.
     - Include links or short summaries of top resurfaced items.
+  - Offline processing (“sleep” cycle):
+    - Run pruning, tunnel maintenance, and score updates as part of nightly/background jobs.
 - **WhatsApp Integration (Input + Retrieval)**
   - Add **WhatsApp** as an additional ingestion + retrieval channel using Baileys (or a similar library).
   - Reuse the same intent-handling and semantic retrieval logic:
@@ -172,6 +179,9 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
   - Use feedback to:
     - Adjust `priority_score` or a separate `usefulness_score`.
     - Improve future resurfacing and potentially tunnel membership weight.
+  - Incorporate **forgetting/pruning**:
+    - Gradually down-weight very low-activation items.
+    - Archive or de-prioritize memories that consistently remain unused, to keep tunnels and retrieval focused.
 
 ---
 
@@ -212,6 +222,12 @@ This roadmap combines the vision in `README.md` with the concrete ideas in `todo
     - Encryption at rest (DB-level or app-layer).
     - Simple backup/export format (JSON or similar).
     - Import/migration path (“take my second mind to a new machine”).
+
+- **Serenity / Nagging Threshold**
+  - Add controls for how proactive the system is:
+    - User-facing “serenity” setting for notification frequency.
+    - Adaptive tuning based on whether the user engages with or dismisses notifications.
+  - Ensure the assistant feels like a calm companion, not a nagging bot.
 
 ---
 

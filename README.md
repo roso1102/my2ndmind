@@ -100,6 +100,12 @@ Each memory object contains:
 
 Embeddings enable semantic recall rather than keyword matching.
 
+Internally, the system can support different **memory regimes**:
+
+* **Short-term working memory** — very recent interactions and context windows (primarily in the LLM layer).
+* **Long-term semantic memory** — all persisted items in the vector database (pgvector).
+* **Structured memory** — higher-level objects like tunnels, tasks, and entities built on top of raw items.
+
 ---
 
 ### 4.3 Semantic Retrieval
@@ -107,9 +113,10 @@ Embeddings enable semantic recall rather than keyword matching.
 Query processing pipeline:
 
 1. Convert query to embedding.
-2. Perform vector similarity search.
-3. Rerank using LLM reasoning.
-4. Return structured, relevant results.
+2. Perform vector similarity search in the vector database (pgvector).
+3. Optionally perform RAG-style retrieval: assemble the most relevant memories as context.
+4. Rerank and summarize using the LLM reasoning layer.
+5. Return structured, relevant results.
 
 Supports natural language recall:
 
@@ -336,7 +343,61 @@ System supports extension toward:
 
 ---
 
-## 9. Non-Goals
+## 9. Cognitive Dynamics and System Behavior
+
+### 9.1 Forgetting and Pruning
+
+A system that remembers everything becomes noisy. MySecondMind incorporates a **forgetting mechanism** inspired by synaptic pruning:
+
+* Memories with consistently low activation (rarely accessed, low relevance, negative feedback) decay over time.
+* Very low-activation items can be:
+  * Archived (moved out of the active recall set).
+  * Down-weighted in resurfacing and RAG contexts.
+* This keeps tunnels and retrieval results sharp instead of clogged with stale notes.
+
+### 9.2 Sleep Cycle (Offline Processing)
+
+Biological brains consolidate memory during sleep. MySecondMind mirrors this with **offline processing**:
+
+* A scheduled background job runs when the user is idle:
+  * Updates resurfacing scores.
+  * Maintains tunnels (cluster updates, growth/dormancy).
+  * Applies forgetting/pruning rules.
+  * Generates nightly reflection reports and daily digests.
+
+### 9.3 Emotional Valence and Friction
+
+Not all memories are equal. Some are emotionally charged or represent “stuck” work:
+
+* Each memory can carry:
+  * **Valence** — rough sentiment (positive/negative/neutral).
+  * **Friction** — degree of blockage or effort (e.g., “stuck on this problem”).
+* These signals help the system:
+  * Prioritize resurfacing of high-friction, high-importance problems.
+  * Distinguish exciting breakthroughs from trivial logs.
+
+### 9.4 Cold Start Strategy
+
+On Day 1, the system should already feel useful:
+
+* Optional **passive ingestion** paths:
+  * Import past chats (Telegram exports, etc.).
+  * Import selected notes or documents.
+  * Pull in a limited browser/bookmark history.
+* These imports are embedded and indexed to immediately populate tunnels and semantic space.
+
+### 9.5 Serenity and Nagging Threshold
+
+Proactivity is powerful but can become annoying:
+
+* The system maintains a **serenity setting** / nagging threshold:
+  * Controls how often digests, resurfacing prompts, and reminders are pushed.
+  * Adapts over time based on user behavior (dismissing or engaging with notifications).
+* Goal: Be a calm, reliable companion—not a noisy assistant.
+
+---
+
+## 10. Non-Goals
 
 * Replacing full project management tools
 * Acting as a general-purpose chatbot
@@ -346,7 +407,7 @@ This is a personal cognitive engine.
 
 ---
 
-## 10. Why This Matters
+## 11. Why This Matters
 
 Cognitive performance determines output.
 
@@ -364,7 +425,7 @@ It transforms memory from passive archive into active intelligence.
 
 ---
 
-## 11. Vision
+## 12. Vision
 
 At maturity, MySecondMind becomes:
 

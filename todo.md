@@ -43,6 +43,15 @@ Example:
     - Shared orchestration + semantic retrieval pipeline.
   - Handle basic authentication / access control so only the owner can talk to their second mind via WhatsApp.
 
+### Voice Notes and Passive Capture
+
+- Support **voice notes** as a first-class input:
+  - Telegram/WhatsApp voice message → local transcription (e.g., Whisper) → ingestion pipeline.
+  - Extract intent, entities, and tasks from transcribed text.
+- Encourage a “dump now, structure later” workflow:
+  - Chat/voice is optimized for fast capture (“Dump Mode”).
+  - Web dashboard is optimized for review, visualization, and reflection (“Review Mode”).
+
 ## Memory Intelligence Layer
 
 Instead of hard-coded SQL resurfacing, our system should:
@@ -55,6 +64,27 @@ Instead of hard-coded SQL resurfacing, our system should:
   - Your behavior
 
 This is much smarter than cron-only logic.
+
+### Forgetting and Pruning
+
+- Design a **decay model** for memory activation:
+  - Lower scores for items that are rarely accessed or consistently marked “not relevant”.
+  - Decide thresholds for:
+    - Keeping items in active recall.
+    - Archiving or down-weighting them.
+- Integrate pruning into:
+  - Tunnel maintenance (remove or de-emphasize dead-end items).
+  - Resurfacing and RAG context selection.
+
+### Emotional Valence and Friction
+
+- Add optional metadata fields:
+  - `valence` (positive/negative/neutral sentiment).
+  - `friction` (how “stuck” or effortful a memory/problem feels).
+- Use LLM or heuristics to estimate these when ingesting memories.
+- Feed valence and friction into:
+  - Resurfacing priority (e.g., highlight high-friction, high-importance problems).
+  - Analytics about what types of work consume the most cognitive energy.
 
 ### Notifications and Resurfacing Delivery
 
@@ -95,6 +125,14 @@ Agent:
   - Telegram messages in the relevant chat/thread.
   - WhatsApp messages once Phase 2 integration is ready.
 - Support multiple reminder patterns (e.g., “2 days before”, “same day morning”, “evening check-in”).
+
+### Serenity / Nagging Threshold
+
+- Add a configurable **serenity setting** for notification frequency and intrusiveness.
+- Track how often the user:
+  - Opens or interacts with digests and resurfacing prompts.
+  - Ignores or dismisses them.
+- Adapt notification cadence to stay helpful without becoming annoying.
 
 ## Product and UX Improvements
 
